@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "drf"
+version = "0.1.0"
+description = ""
+authors = ["mauer <75573495+mauer9@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "~3.11"
+djangorestframework = "^3.14.0"
+markdown = "^3.5.2"
+django-filter = "^23.5"
+django = "^5.0.2"
+psycopg2-binary = "^2.9.9"
+pygments = "^2.17.2"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pyright]
+venvPath = "/home/mauer/.cache/pypoetry/virtualenvs"
+venv = "drf-Tc2aXxSH-py3.11"
