@@ -20,3 +20,16 @@ def snippet_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
+@csrf_exempt
+def snippet_detail(request, pk):
+    """get snippet detail"""
+    try:
+        snippet = Snippet.objects.get(pk=pk)
+    except Snippet.DoesNotExist:
+        return HttpResponse("snippet does not exist", status=404)
+
+    if request.method == "GET":
+        serializer = SnippetSerializer(snippet)
+        return JsonResponse(serializer.data, safe=False)
