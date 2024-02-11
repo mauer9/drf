@@ -24,7 +24,7 @@ def snippet_list(request):
 
 @csrf_exempt
 def snippet_detail(request, pk):
-    """get snippet detail"""
+    """get, modify, delete snippet by id"""
     try:
         snippet = Snippet.objects.get(pk=pk)
     except Snippet.DoesNotExist:
@@ -42,3 +42,7 @@ def snippet_detail(request, pk):
             serializer.save()
             return JsonResponse(serializer.data, safe=False)
         return JsonResponse(serializer.errors, status=400)
+
+    if request.method == "DELETE":
+        snippet.delete()
+        return HttpResponse("snippet deleted", status=204)
