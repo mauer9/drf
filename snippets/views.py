@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
@@ -7,7 +8,7 @@ from rest_framework import mixins
 from rest_framework import generics
 
 from snippets.models import Snippet
-from snippets.serializers import SnippetSerializer
+from snippets.serializers import SnippetSerializer, UserSerializer
 
 
 class SnippetList(generics.ListCreateAPIView):
@@ -22,3 +23,17 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
+
+
+class UserList(generics.ListAPIView):
+    """get all users list"""
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    """get user by id"""
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
