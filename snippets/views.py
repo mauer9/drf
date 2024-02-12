@@ -10,38 +10,15 @@ from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
 
 
-class SnippetList(
-    generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin
-):
+class SnippetList(generics.ListCreateAPIView):
     """get all snippets list or create a snippet"""
 
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-
-class SnippetDetail(
-    generics.GenericAPIView,
-    mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-):
+class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     """get, modify, delete snippet by id"""
 
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-
-    # PUT because url exists; idempotent
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, pk, format=None):
-        return self.destroy(request, *args, **kwargs)
