@@ -1,10 +1,22 @@
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth.models import User
-from rest_framework import generics
+from rest_framework import decorators, response, relations, generics
 
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer, UserSerializer
 from snippets.permissions import IsOwnerOrReadOnly
+
+
+@decorators.api_view(["GET"])
+def api_root(request, format=None):
+    return response.Response(
+        {
+            "users": relations.reverse("user-list", request=request, format=format),
+            "snippets": relations.reverse(
+                "snippet-list", request=request, format=format
+            ),
+        }
+    )
 
 
 class SnippetList(generics.ListCreateAPIView):
