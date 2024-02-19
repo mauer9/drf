@@ -4,26 +4,30 @@ from snippets.models import Snippet
 
 
 class SnippetSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source="owner.username")
+    owner = serializers.HyperlinkedRelatedField(view_name="user-detail", read_only=True)
+    highlight = serializers.HyperlinkedIdentityField(
+        view_name="snippet-highlight", format="html"
+    )
 
     class Meta:
         model = Snippet
         fields = [
             "id",
+            "url",
             "owner",
             "title",
             "language",
             "style",
             "linenos",
             "code",
-            "highlighted",
+            "highlight",
             "created",
         ]
 
 
 class UserSerializer(serializers.ModelSerializer):
-    snippets = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Snippet.objects.all()
+    snippets = serializers.HyperlinkedRelatedField(
+        many=True, view_name="snippet-detail", read_only=True
     )
 
     class Meta:

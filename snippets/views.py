@@ -1,20 +1,22 @@
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth.models import User
-from rest_framework import decorators, response, relations, generics
+from rest_framework.renderers import StaticHTMLRenderer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.relations import reverse
+from rest_framework import generics
 
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer, UserSerializer
 from snippets.permissions import IsOwnerOrReadOnly
 
 
-@decorators.api_view(["GET"])
+@api_view(["GET"])
 def api_root(request, format=None):
-    return response.Response(
+    return Response(
         {
-            "users": relations.reverse("user-list", request=request, format=format),
-            "snippets": relations.reverse(
-                "snippet-list", request=request, format=format
-            ),
+            "users": reverse("user-list", request=request, format=format),
+            "snippets": reverse("snippet-list", request=request, format=format),
         }
     )
 
@@ -36,6 +38,17 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+
+class SnippetHighlight(generics.GenericAPIView):
+    """get highlighted code"""
+
+    queryset = Snippet.objects.all()
+    renderer_classes = [StaticHTMLRenderer]
+
+    def get(self, *args, **kwargs):
+        snippet = self.get_object()
+        return Response(snippet.highlighted)
 
 
 class UserList(generics.ListAPIView):
