@@ -23,7 +23,7 @@ class Snippet(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        use 'pygments' library
+        using 'pygments' library
         to add highlighted html representation of the code
         """
         lexer = get_lexer_by_name(self.language)

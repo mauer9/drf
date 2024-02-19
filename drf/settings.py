@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-_&23l17ad&5xsy7%&t5g4vxz0-=krot8!37x14za^%2$^+^31h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost.localdomain", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -48,6 +48,9 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+    ],
     "DEFAULT_PERMISSION_CLASSES": [
         # "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
         # "rest_framework.permissions.DjangoModelPermissions",
